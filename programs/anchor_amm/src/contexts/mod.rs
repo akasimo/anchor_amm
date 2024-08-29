@@ -10,11 +10,5 @@ pub use withdraw::*;
 pub mod swap;
 pub use swap::*;
 
-pub mod lock;
-pub use lock::*;
-
-pub mod unlock;
-pub use unlock::*;
-
-pub mod collect;
-pub use collect::*;
+pub mod update;
+pub use update::*;

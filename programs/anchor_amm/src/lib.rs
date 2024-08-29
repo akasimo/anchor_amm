@@ -5,6 +5,9 @@ pub use state::*;
 pub mod contexts;
 pub use contexts::*;
 
+pub mod errors;
+mod helpers;
+
 declare_id!("2oAPYdwKv92TZr6YELKy4TLXCQxSz16cLzSQ5w7tvFJs");
 
 #[program]
@@ -14,43 +17,29 @@ pub mod anchor_amm {
     // Intialize the pool
     pub fn initialize(ctx: Context<Initialize>, seed: u64, fee:u16) -> Result<()> {
         // save config
-        ctx.accounts.save_config(seed, fee, &ctx.bumps)?;
-        
-        Ok(())
+        ctx.accounts.save_config(seed, fee, &ctx.bumps)
     }
 
-    // // Add liquidity to receive LP tokens
-    // pub fn deposit(ctx: Context<Deposit>, amount: u64, max_x:u64, max_y:u64) -> Result<()> {
-    //     // max_x and max_y are used for handling slippage
-    //     // deposit_tokens
-    //     // mint_lp_token
-    //     Ok(())
-    // }
+    // Add liquidity to receive LP tokens
+    pub fn deposit(ctx: Context<Deposit>, amount: u64, max_x:u64, max_y:u64) -> Result<()> {
+        ctx.accounts.deposit(amount, max_x, max_y)
+    }
 
-    // // Burn LP tokens to withdraw tokens
-    // pub fn withdraw(ctx: Context<Withdraw>, amount: u64, min_x: u64, min_y: u64) -> Result<()> {
-    //     // burn lp tokens
-    //     // withdraw tokens
-        
-    //     Ok(())
-    // }
+    // Burn LP tokens to withdraw tokens
+    pub fn withdraw(ctx: Context<Withdraw>, amount:u64, min_x: u64, min_y: u64) -> Result<()> {
+        ctx.accounts.withdraw(amount, min_x, min_y)
+    }
 
-    // // Swap tokens
-    // pub fn swap(ctx: Context<Swap>, amount_in: u64, minimum_amount_out: u64, is_x: bool) -> Result<()> {
-    //     Ok(())
-    // }
+    pub fn swap(ctx: Context<Swap>, mint_deposit:Pubkey, amount_in: u64, amount_out_min: u64) -> Result<()> {
+        ctx.accounts.swap(mint_deposit, amount_in, amount_out_min)
+    }
 
-    // pub fn lock(ctx: Context<Lock>, amount: u64) -> Result<()> {
-    //     Ok(())
-    // }
+    pub fn lock(ctx: Context<Update>) -> Result<()> {
+        ctx.accounts.lock()
+    }
 
-    // pub fn unlock(ctx: Context<Unlock>, amount: u64) -> Result<()> {
-    //     Ok(())
-    // }
-
-    // pub fn collect(ctx: Context<Collect>) -> Result<()> {
-    //     // collect fees
-    //     Ok(())
-    // }
+    pub fn unlock(ctx: Context<Update>) -> Result<()> {
+        ctx.accounts.unlock()
+    }
 }
 

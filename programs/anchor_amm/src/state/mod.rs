@@ -4,9 +4,11 @@ use anchor_lang::prelude::*;
 #[derive(InitSpace)]
 pub struct Config {
     pub seed: u64,
+    pub authority: Pubkey,
     pub fee: u16,
     pub mint_x: Pubkey,
     pub mint_y: Pubkey,
+    pub locked: bool,
     pub lp_bump: u8,
     pub bump: u8,
 }
